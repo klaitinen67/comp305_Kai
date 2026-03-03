@@ -1,0 +1,6 @@
+@comp305_Kai_HostAddress = http://localhost:5127
+
+GET {{comp305_Kai_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
