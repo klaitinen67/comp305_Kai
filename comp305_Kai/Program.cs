@@ -1,4 +1,12 @@
+using Microsoft.EntityFrameworkCore;
+using comp305_Kai.Data; // referencing the location of the mycontext location
+
 var builder = WebApplication.CreateBuilder(args);
+
+// connection string -> points directly to appsettings.json
+builder.Services.AddDbContext<MyContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+    );
 
 // Add services to the container.
 
@@ -15,8 +23,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
