@@ -7,7 +7,7 @@ namespace comp305_Kai.Data
     {
         public MyContext(DbContextOptions<MyContext> options) :base(options){ }
 
-        public DbSet<Product> products { get; set; }
+        public DbSet<Employee> employees { get; set; }
         // IDENTICAl to the table name
     }
 }
