@@ -2,6 +2,7 @@
 using comp305_Kai.Models;
 using comp305_Kai.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata.Ecma335;
 
 namespace comp305_Kai.Controllers
 {
@@ -26,6 +27,27 @@ namespace comp305_Kai.Controllers
             }
             catch (Exception e)
             {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> AddEmployee([FromBody] Employee value)
+        {
+            try
+            {
+                var person = new Employee
+                {
+                    Name = value.Name,
+                    Email = value.Email
+                };
+                _db.employees.Add(person);
+                await _db.SaveChangesAsync();
+                return Ok(person);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("I got an exception: " + e.Message);
                 return BadRequest(e.Message);
             }
         }
