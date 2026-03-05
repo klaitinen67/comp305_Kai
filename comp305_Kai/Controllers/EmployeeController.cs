@@ -31,7 +31,7 @@ namespace comp305_Kai.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPut("[action]")]
         public async Task<IActionResult> AddEmployee([FromBody] Employee value)
         {
             try
@@ -41,14 +41,63 @@ namespace comp305_Kai.Controllers
                     Name = value.Name,
                     Email = value.Email
                 };
+
                 _db.employees.Add(person);
                 await _db.SaveChangesAsync();
+
                 return Ok(person);
             }
             catch (Exception e)
             {
                 Console.WriteLine("I got an exception: " + e.Message);
                 return BadRequest(e.Message);
+            }
+        }
+
+        [HttpDelete("[action]")]
+        public async Task<IActionResult> DeleteEmployee([FromBody] long id)
+        {
+            try
+            {
+                var person = await _db.employees.FindAsync(id);
+
+                if (person == null)
+                    return NotFound();
+
+                _db.employees.Remove(person);
+                await _db.SaveChangesAsync();
+
+                return Ok(person);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("I got an exception: " + e.Message);
+                return BadRequest();
+            }
+        }
+
+        [HttpPut("[action]/{id}")]
+        public async Task<IActionResult> UpdateEmployee([FromBody] Employee value, long id)
+        {
+
+            try
+            {
+                var OldEmployee = await _db.employees.FindAsync(id);
+
+                if (value != null && OldEmployee != null)
+                    OldEmployee.Name = value.Name;
+                    OldEmployee.Email = value.Email;
+                    
+
+                _db.employees.Update(OldEmployee);
+                await _db.SaveChangesAsync();
+
+                return Ok(value);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("I Got an Exception: " + e.Message);
+                return BadRequest();
             }
         }
     }
